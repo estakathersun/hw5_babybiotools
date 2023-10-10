@@ -109,8 +109,3 @@ Example:
         ):
             filtered_seqs[seq_id] = value
     return filtered_seqs
-
-
-seq1 = "MSRSLLLRFLLFLLLLPPLP"
-seq2 = "MSRSLLLRFLLFLLLLPPLP"
-print(run_aminoacid_tools(seq1, seq2, operation="calculate_molecular_weight"))
