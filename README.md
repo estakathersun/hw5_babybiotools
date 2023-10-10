@@ -14,6 +14,8 @@ Contains the next modules:
 - [Python](https://www.python.org/downloads/) version 3.9 or higher
 
 ## Modules
+`babybio_main.py` script contains functions that calls represented modules.
+
 
 To use BabyBioTools modules import one or more modules described below into your `*.py` script, for example:
 
