@@ -60,7 +60,7 @@ Returns:
 
 def run_fastq_filter(seqs: dict,
                      gc_bounds: tuple | int = (0, 100),
-                     length_bounds: tuple | int = (0, 2**32),
+                     length_bounds: tuple | int = (0, 2 ** 32),
                      quality_threshold: int = 0):
     """ Filters a dictionary of FASTQ sequences based on GC content, sequence
     length, and quality threshold.
@@ -93,9 +93,9 @@ Example:
         seq = value[0]
         qual_seq = value[1]
         if (
-            gc_filter(seq, gc_bounds) is True &
-            length_filter(seq, length_bounds) is True &
-            quality_filter(seq, qual_seq, quality_threshold) is True
+                gc_filter(seq, gc_bounds) is True &
+                length_filter(seq, length_bounds) is True &
+                quality_filter(seq, qual_seq, quality_threshold) is True
         ):
             filtered_seqs[idx] = value
     return filtered_seqs
