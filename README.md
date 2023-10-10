@@ -76,8 +76,7 @@ Arguments:
   integer can be provided as a shorthand for setting the upper bound to that value and the lower bound to 0. `(0, 100)`
   as default.
 * `length_bounds` - a tuple of two integers representing the lower and upper bounds for sequence length. Alternatively,
-  a single integer can be provided as a shorthand for setting the upper bound to that value and the lower bound to
-  0. `(0, 2**32)` as default.
+  a single integer can be provided as a shorthand for setting the upper bound to that value and the lower bound to 0. `(0, 2**32)` as default.
 * `quality_threshold` - the minimum acceptable quality score for each base in the sequence. `0` as default.
 
 Returns an equivalent dictionary of filtered FASTQ sequences where the keys are the sequence IDs and the values are
