@@ -1,3 +1,5 @@
+import os.path
+
 import modules.aminoacid_tools as aa
 import modules.fastq_tools as fq
 import modules.dna_rna_tools as na
@@ -67,37 +69,33 @@ def run_aminoacid_tools(*seqs: str, operation: str) -> str:
     return output
 
 
-def run_fastq_filter(seqs: dict,
+def run_fastq_filter(input_path: str,
+                     output_filename: str = None,
                      gc_bounds: Union[tuple, int] = (0, 100),
                      length_bounds: Union[tuple, int] = (0, 2 ** 32),
-                     quality_threshold: int = 0) -> dict:
-    """ Filters a dictionary of FASTQ sequences based on GC content, sequence
-    length, and quality threshold.
-Args:
-    - seqs (dict): A dictionary of FASTQ sequences where the keys are the sequence
-    IDs and the values are tuples of the form (sequence, quality scores).
-    - gc_bounds (tuple | int): A tuple of two integers representing the lower
-    and upper bounds for GC content.
-    Alternatively, a single integer can be provided as a shorthand for setting
-    the upper bound to that value and the lower bound to 0.
-    - length_bounds (tuple | int): A tuple of two integers representing
-    the lower and upper bounds for sequence length.
-    Alternatively, a single integer can be provided as a shorthand for setting
-    the upper bound to that value and the lower bound to 0.
-    - quality_threshold (int): The minimum acceptable quality score for each
-    base in the sequence.
-Returns:
-    - dict: A filtered dictionary of FASTQ sequences where the keys are the
-    sequence IDs and the values are tuples of the form (sequence, quality scores).
-
-Example:
-    seqs = {
-        "@seq1": ("ATCGATCG", "!##$%&'"),
-        "@seq2": ("AGCTAGCTAGCT", "!!!!@@@@####")
-    }
-    filtered_seqs = run_fastq_filter(seqs, gc_bounds = (30, 70),
-    length_bounds = 10, quality_threshold = 20)
-"""
+                     quality_threshold: int = 0):
+    """
+    Reads a FASTQ file, filters sequences based on GC content, sequence
+    length and quality threshold, and writes the filtered sequences to
+    a new file.
+    Args:
+        - input_path (str): A string representing the path to the input FASTQ
+        file.
+        - output_filename (str: A string representing the name of the output file.
+        If None, the original filename will be used as output filename.
+    as the input filename with the extension removed
+        - gc_bounds (tuple | int): A tuple of two integers representing the lower
+        and upper bounds for GC content.
+        Alternatively, a single integer can be provided as a shorthand for setting
+        the upper bound to that value and the lower bound to 0.
+        - length_bounds (tuple | int): A tuple of two integers representing
+        the lower and upper bounds for sequence length.
+        Alternatively, a single integer can be provided as a shorthand for setting
+        the upper bound to that value and the lower bound to 0.
+        - quality_threshold (int): The minimum acceptable quality score for each
+        base in the sequence.
+    """
+    seqs = fq.read_fastq_file(input_path)
     filtered_seqs = {}
     for seq_id, value in seqs.items():
         seq = value[0]
@@ -108,4 +106,7 @@ Example:
                 fq.quality_filter(seq, qual_seq, quality_threshold) is True
         ):
             filtered_seqs[seq_id] = value
-    return filtered_seqs
+    if output_filename is None:
+        # remove extension
+        output_filename = os.path.basename(input_path)[:-6]
+    fq.write_output_file(filtered_seqs, output_filename)
